@@ -1,10 +1,10 @@
 const sgMail = require('@sendgrid/mail');
 const Booking = require('./models/Booking');
-let to = user.email;
-let usersName = user.email;
-let restaurant = restaurant.name;
-let date = date;
-let time = time;
+let to = 'email';
+let usersName = 'username';
+let restaurant = 'restaurant';
+let date = 'date';
+let time = 'time';
 
 
 sgMail.setApiKey('*API KEY HERE*');
@@ -14,9 +14,9 @@ function send(email, message) {
         to: String,
         from: 'Dining Room Confirmation',
         subject: 'Confirmation of your reservation',
-        text: 'Hello, ' + usersName + ". This is a confirmation for your reservation at " + restauraunt " on the " + date + " at " +
+        text: 'Hello, ' + usersName + ". This is a confirmation for your reservation at " + restauraunt + " on the " + date + " at " +
             time + " Thank you for using Dining Room. ",
-        html: null,
+        html: null
     };
     return sgMail.send(msg);
 }
@@ -29,8 +29,8 @@ function sendCancel(email, message) {
         to: String,
         from: 'Dining Room Restaurant Cancelation',
         subject: 'URGENT! Sorry but the restaurant has cancelled',
-        text: 'Hello, ' + usersName + ". This email is to notify you that your booking for " + restauraunt " on the " + date + " at " +
-            time + "has been Cancelled. Thank you for using Dining Room. "
+        text: 'Hello, ' + usersName + ". This email is to notify you that your booking for " + restauraunt + " on the " + date + " at " +
+            time + "has been Cancelled. Thank you for using Dining Room. ",
         html: null,
     };
     return sgMail.sendCancel(msg);
