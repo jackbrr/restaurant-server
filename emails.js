@@ -11,12 +11,12 @@ sgMail.setApiKey('*API KEY HERE*');
 
 function send(email, message) {
     const msg = {
-        to: String,
+        to,
         from: 'Dining Room Confirmation',
         subject: 'Confirmation of your reservation',
-        text: 'Hello, ' + usersName + ". This is a confirmation for your reservation at " + restauraunt + " on the " + date + " at " +
+        text: 'Hello, ' + usersName + ". This is a confirmation for your reservation at " + restaurant + " on the " + date + " at " +
             time + " Thank you for using Dining Room. ",
-        html: null
+        html: '' 
     };
     return sgMail.send(msg);
 }
@@ -26,15 +26,14 @@ sgMail.setApiKey('*API KEY HERE*');
 
 function sendCancel(email, message) {
     const msg = {
-        to: String,
+        to,
         from: 'Dining Room Restaurant Cancelation',
         subject: 'URGENT! Sorry but the restaurant has cancelled',
         text: 'Hello, ' + usersName + ". This email is to notify you that your booking for " + restauraunt + " on the " + date + " at " +
             time + "has been Cancelled. Thank you for using Dining Room. ",
-        html: null,
+        html: '',
     };
     return sgMail.sendCancel(msg);
 }
 
-module.exports = { send };
-module.exports = { sendCancel };
+module.exports = { send, sendCancel };
