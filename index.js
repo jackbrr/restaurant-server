@@ -5,6 +5,7 @@ const Booking = require('./models/Booking');
 const path = require('path');
 const cors = require('cors');
 const emails = require('./emails');
+const Availability = require('./availability');
 
 const app = express();
 app.use(bodyParser.json());
@@ -15,37 +16,49 @@ connect();
 
 // Create a booking
 app.post('/book', (req, res) => {
-  new Booking(req.body).save().then(() => {
-    emails.send().then(() => {
-      res.send(req.body);
+    new Booking(req.body).save().then(() => {
+        emails.send(req.body).then(() => {
+        res.send(req.body);
+        });
     });
-  });
 });
 
 // View bookings by userId
 app.post('/bookings', (req, res) => {
-  Booking.find(req.body.data, (err, bookings) => {
-    res.status(200).send(bookings);
-  });
+    Booking.find(req.body.data, (err, bookings) => {
+        res.status(200).send(bookings);
+    });
 });
 
 app.delete('/bookings', (req, res) => {
-  Booking.remove({ _id: req.query.id }).then(() => {
-    emails.sendCancel().then(() => {
-      res.send(req.body);
-      res.status(200).send(req.params.id);
+    Booking.remove({ _id: req.body.id }).then(() => {
+        res.status(200).send(req.params.id);
+        emails.sendCancel(req.body).then(() => {
+            res.send(req.body);
+        });
     });
-  });
 });
 
 app.get('/restaurant/home', (req, res) => {
-  res.sendFile(path.resolve('public/index.html'));
+    res.sendFile(path.resolve('public/index.html'));
 });
+
+app.get("/availability", (req, res) => {
+    Availability.find({restaurantId: req.query.id}, (err, availability) => {
+        res.send(availability)
+    });
+})
+
+app.post('/availability', (req, res) => {
+    Availability.findOneAndUpdate({ restaurantId: req.query.restaurantId }, { $set: { spaces: req.query.spaces }}, { new: true }, (err, doc) => {
+        res.send(doc);
+      });
+});
+
+
 
 //app.get('/', (req, res) => {
 //res.sendFile(path.resolve('public/index.html'));
 //});
 
-app.listen(3000, () =>
-  console.log('Restaurant booking server started on port 3000.')
-);
+app.listen(3000, () => console.log('Restaurant booking server started on port 3000.'));

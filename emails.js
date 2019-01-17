@@ -1,39 +1,29 @@
 const sgMail = require('@sendgrid/mail');
 const Booking = require('./models/Booking');
-let to = 'email';
-let usersName = 'username';
-let restaurant = 'restaurant';
-let date = 'date';
-let time = 'time';
 
+sgMail.setApiKey('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');
 
-sgMail.setApiKey('*API KEY HERE*');
-
-function send(email, message) {
+function send(bookingInfo) {
     const msg = {
-        to,
-        from: 'Dining Room Confirmation',
+        to: bookingInfo.email,
+        from: 'jackbarr123@googlemail.com',
         subject: 'Confirmation of your reservation',
-        text: 'Hello, ' + usersName + ". This is a confirmation for your reservation at " + restaurant + " on the " + date + " at " +
-            time + " Thank you for using Dining Room. ",
-        html: '' 
+        text: 'Hello, this email is to confirm the booking made for ' + bookingInfo.restaurant.name +  ' on the '  + bookingInfo.date + ' at ' + bookingInfo.time + ' for ' + bookingInfo.numPeople + ' people. Thank you for using Dining Room.',
+        html: 'Hello,  this email is to confirm the booking made for ' + bookingInfo.restaurant.name +  ' on the '  + bookingInfo.date + ' at ' + bookingInfo.time + ' for ' + bookingInfo.numPeople + ' people. Thank you for using Dining Room.',
     };
+    
     return sgMail.send(msg);
 }
 
-
-sgMail.setApiKey('*API KEY HERE*');
-
-function sendCancel(email, message) {
-    const msg = {
-        to,
-        from: 'Dining Room Restaurant Cancelation',
-        subject: 'URGENT! Sorry but the restaurant has cancelled',
-        text: 'Hello, ' + usersName + ". This email is to notify you that your booking for " + restauraunt + " on the " + date + " at " +
-            time + "has been Cancelled. Thank you for using Dining Room. ",
-        html: '',
-    };
-    return sgMail.sendCancel(msg);
+    function sendCancel(bookingInfo) {
+     const msgCancel = {
+        to: bookingInfo.email,
+        from: 'jackbarr123@googlemail.com',
+        subject: 'Cancellation of your reservation',
+        text: 'Hello, ',
+        html: 'Hello, ',
+   };
+    return sgMail.send(msgCancel);
 }
 
 module.exports = { send, sendCancel };
