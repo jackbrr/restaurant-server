@@ -1,7 +1,7 @@
 const sgMail = require('@sendgrid/mail');
 const Booking = require('./models/Booking');
 
-sgMail.setApiKey('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');
+sgMail.setApiKey('APIKEY');
 
 function send(bookingInfo) {
     const msg = {
